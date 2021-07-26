@@ -11,7 +11,7 @@ import java.util.List;
 @Getter @Setter
 @AllArgsConstructor @NoArgsConstructor
 @Builder
-public class Member {
+public class Member { // 얘 자체를 validation 체크 용으로 써도 됨
 
     @Id @GeneratedValue
     private Long id;

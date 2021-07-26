@@ -38,6 +38,7 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.hibernate/hibernate-validator
 	implementation group: 'org.hibernate', name: 'hibernate-validator', version: '7.0.1.Final'
 
+//	implementation group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity5', version: '3.0.4.RELEASE'
 }
 
 test {
