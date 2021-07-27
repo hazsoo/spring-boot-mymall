@@ -1,18 +1,21 @@
 package com.megait.mymall.domain;
 
 import lombok.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
-@Getter @Setter
-@AllArgsConstructor @NoArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class Member { // 얘 자체를 validation 체크 용으로 써도 됨
-
+public class Member {
     @Id @GeneratedValue
     private Long id;
 
@@ -25,18 +28,26 @@ public class Member { // 얘 자체를 validation 체크 용으로 써도 됨
 
     private boolean emailVerified;
 
-    private String emailCheckToken; // 이메일 검증에 사용할 토큰
+    private String emailCheckToken;  // 이메일 검증에 사용할 토큰
 
     @Enumerated(EnumType.STRING)
     private MemberType type;
 
     @ManyToMany
-    private List<Item> likes = new ArrayList<>(); // 찜한 상품들
+    private List<Item> likes = new ArrayList<>();  // 찜한 상품들
 
-    @OneToMany(mappedBy = "member") // Order의 member 필드와 mapping
+    @OneToMany(mappedBy = "member")  // Order의 member 필드와 mapping
     private List<Order> orders = new ArrayList<>(); // 주문들 (주문내역)
 
     @Embedded
     private Address address;
+
+    @Transactional // JPARepository 가 아닌 다른 메서드에서 디비 변경을 해야한다면
+                    // 그 메서드에 @Transactional 선언. (spring-data-jpa)
+    // 자동으로 transaction begin, commit 같이 실행됨 -> 디비에 들어가게끔
+    // org.springframework.transaction.annotation.Transactional;
+    public void generateEmailCheckToken(){
+        emailCheckToken = UUID.randomUUID().toString();
+    }
 
 }

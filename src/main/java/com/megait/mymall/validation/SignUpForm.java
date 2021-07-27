@@ -3,16 +3,17 @@ package com.megait.mymall.validation;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
-@Data // = @Getter + @Setter
+@Data  // @Getter, @Setter 두 개 쓴거랑 동일
 public class SignUpForm {
 
-    @NotBlank
-    @Length(min = 5, max = 40)
-    @Email
+    @NotBlank(message = "필수 항목입니다.")
+    @Length(min = 5, max = 40, message = "이메일은 5자 이상 40자 이하여야합니다.")
+    @Email(message = "이메일 형식을 지켜주세요. (예. test@test.com)")
     private String email;
 
     @Pattern(
@@ -21,12 +22,19 @@ public class SignUpForm {
     )
     private String password;
 
-    @NotBlank
-    private String agreeTermsOfService; // 약관동의
+    @NotBlank(message = "반드시 약관에 동의하셔야합니다.")
+    private String agreeTermsOfService;
 
     private String street;
     private String city;
 
-    @Pattern(regexp = "^[0-9]{5}$") // TODO 정규식 맞는지 확인할 것
+    @Pattern(regexp = "(^[0-9]+$|^$)")
     private String zipcode;
+
+    @AssertTrue(message = "올바른 주소 형식을 지켜주세요.")
+    public boolean isValidAddress() {
+        return (street == null && city == null && zipcode == null) ||
+                (street.isBlank() && city.isBlank() && zipcode.isBlank()) ||
+                (!street.isBlank() && !city.isBlank() && !zipcode.isBlank());
+    }
 }

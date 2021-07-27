@@ -3,16 +3,18 @@ package com.megait.mymall.validation;
 import com.megait.mymall.domain.Member;
 import com.megait.mymall.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import java.util.Optional;
 
+
 @Component
 @RequiredArgsConstructor
-public class SignUpFormValidator implements Validator {
+@Slf4j
+public class  SignUpFormValidator implements Validator {
 
     private final MemberRepository repository;
 
@@ -26,7 +28,7 @@ public class SignUpFormValidator implements Validator {
         SignUpForm form = (SignUpForm) target;
         Optional<Member> optional = repository.findByEmail(form.getEmail());
         if(optional.isPresent()){
-            errors.rejectValue("email", "duplicate.email");
+            errors.rejectValue("email", "duplicate.email", "이미 가입된 이메일입니다.");
         }
     }
 }
