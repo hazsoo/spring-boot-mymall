@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
-
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security"> <!--  sec 네임스페이스 추가 -->
 <!-- header -->
-<div id="header" th:fragment="headerFragment">
+<th:block th:fragment="headerFragment(activeTab)"> <!--  activeTab 매개변수 추가 -->
 
     <!-- 대문 컨테이너 -->
     <div class="jumbotron jumbotron-fluid bg-dark">
@@ -18,15 +19,33 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item"><a class="nav-link">로그인</a></li>
-                <li class="nav-item"><a class="nav-link">회원가입</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/}">로그아웃</a></li>
+                <li class="nav-item" th:classappend="${activeTab == 'login'} ? active" sec:authorize="!isAuthenticated()"><!-- active 클래스 추가, authorize 속성 추가(로그인상태가 아니면) -->
+                    <a class="nav-link" th:href="@{/login}">로그인</a>
+                </li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/signup}" th:classappend="${activeTab == 'signup'} ? active">회원가입</a></li> <!-- 회원가입 링크 추가 -->
 
+                <li class="nav-item" th:classappend="${activeTab == 'logout'} ? active">
+                    <form class="form-inline" th:action="@{/logout}" th:method="post"> <!--  로그아웃을 다음으로 변경 <a> -> <form> -->
+                        <button class="nav-link btn btn-dark" type="submit" sec:authorize="isAuthenticated()">로그아웃</button>
+                    </form>
+                </li>
+                <!-- 내 정보 페이지 링크 -->
+                <li class="nav-item" th:classappend="${activeTab == 'mypage'} ? active"
+                    sec:authorize="isAuthenticated()">
+                    <a class="nav-link" th:href="@{'/mypage/' + ${#authentication?.name}}" sec:authentication="name">내 정보</a>
+                </li>
 
-                <li class="nav-item"><a class="nav-link" th:href="@{/}">내정보</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/}">상품목록</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/}">장바구니</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/}"><i class="fas fa-heart"></i></a></li>
+                <li class="nav-item" th:classappend="${activeTab == 'items'} ? active">
+                    <a class="nav-link" th:href="@{/}">상품목록</a>
+                </li>
+
+                <li class="nav-item" th:classappend="${activeTab == 'cart'}? active">
+                    <a class="nav-link" th:href="@{/}">장바구니</a>
+                </li>
+
+                <li class="nav-item" th:classappend="${activeTab} == 'like'? active" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" th:href="@{/}"><i class="fas fa-heart"></i></a>
+                </li>
 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown"
@@ -48,7 +67,8 @@
         </div>
     </nav>
 
-</div>
-
-
+    <div class="alert alert-warning" role="alert" th:if="${member != null && !member.emailVerified}">
+        가입을 완료하려면 <a href="#" th:href="@{/check-email}" class="alert-link">계정 인증 이메일을 확인</a>하세요.
+    </div>
+</th:block>
 </html>

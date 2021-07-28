@@ -3,25 +3,30 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
+    <title th:text="'My Mall ::: ' + title"></title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-    <!-- fragments/config : fragments 디렉토리의 config.html
-          :: => ~의 (~안에 들어있는)
-          configFragment 라는 이름의 block  -->
-    <th:block th:replace="fragments/config :: configFragment"></th:block>
+    <link rel="stylesheet" th:href="@{/css/common/common.css}" >
+    <script th:src="@{/js/common/common.js}"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 </head>
 <body>
-    <!-- header -->
-    <th:block th:replace="fragments/header :: headerFragment"></th:block>
+<!-- header -->
+<header th:replace="~{fragments/header :: headerFragment(${activeTab})}"></header>
 
-    <!-- main -->
-    <th:block layout:fragment="content"></th:block>
+<!-- main -->
+<section layout:fragment="content"></section>
 
-    <!-- footer -->
-    <th:block th:replace="fragments/footer :: footerFragment"></th:block>
+<!-- footer -->
+<footer class="jumbotron jumbotron-fluid text-center bg-dark banner" style="margin-bottom: 0">
+    <p style="color: ghostwhite">&copy;2021. Sera Lee. All Rights Reserved.</p>
+</footer>
 
 </body>
 </html>

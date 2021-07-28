@@ -42,7 +42,7 @@ public class Member {
     @Embedded
     private Address address;
 
-    @Transactional // JPARepository 가 아닌 다른 메서드에서 디비 변경을 해야한다면
+    @Transactional // JPA Repository 가 아닌 다른 메서드에서 디비 변경을 해야한다면
                     // 그 메서드에 @Transactional 선언. (spring-data-jpa)
     // 자동으로 transaction begin, commit 같이 실행됨 -> 디비에 들어가게끔
     // org.springframework.transaction.annotation.Transactional;
