@@ -23,7 +23,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/item/*").permitAll()
 
                 // 다음 디렉토리 혹은 파일은 인증 없이 요청 가능
-                // .antMatchers("/css/**", "/images/**", "/js/**", "**/favicon.ico").permitAll()
+                .antMatchers("/css/**", "/images/**", "/js/**", "**/favicon.ico").permitAll()
                 // 이것보다는 밑에 ignoring()이 좋다.
 
                 // 나머지 요청은 로그인 해야만 요청 가능
@@ -32,7 +32,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginPage("/login")  // 안해도 기본값이 이미 '/login'임
-                .defaultSuccessUrl("/", true);
+                .defaultSuccessUrl("/", true)
+
+                .and()
+                .logout()
+                .logoutUrl("/logout") // 안해도 기본값이 이미 '/logout'임임
+                .invalidateHttpSession(true) // 로그아웃했을때 세션을 갱신
+                .logoutSuccessUrl("/"); // 로그아웃하면 메인으로 가게
+
     }
 
     @Override
