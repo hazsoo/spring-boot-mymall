@@ -26,6 +26,16 @@ public class Category {
     @ManyToMany
     private List<Item> items = new ArrayList<>(); // 이 카테고리에 속한 상품들
 
-    // TODO 0715 - Category 완성하기
+    public Category addChildCategory(Category child) {
+        if(child == null){
+            return this;
+        }
+        if(children == null){
+            children = new ArrayList<>();
+        }
+        children.add(child);
+        child.setParent(this);
+        return this;
+    }
 
 }

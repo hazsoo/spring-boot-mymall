@@ -100,16 +100,16 @@ public class MemberService implements UserDetailsService {
             log.info("없는 이메일로 로그인 시도");
             throw new UsernameNotFoundException(email);
         }
-//        log.info("있는 이메일로 로그인 시도");
-//        return new MemberUser(optionalMember.get());
+        log.info("있는 이메일로 로그인 시도");
+        return new MemberUser(optionalMember.get());
 
-        Member member = optionalMember.get();
-        User user = new User(
-                member.getEmail(),
-                member.getPassword(),
-                List.of(new SimpleGrantedAuthority(member.getType().name()))
-        );
-        return user;
+//        Member member = optionalMember.get();
+//        User user = new User(
+//                member.getEmail(),
+//                member.getPassword(),
+//                List.of(new SimpleGrantedAuthority(member.getType().name()))
+//        );
+//        return user;
     }
 
 }
