@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+
+<!--footerFragment 선언-->
+<div th:fragment="ItemListFragment(itemList)">
+  <div class="row" >
+    <div th:each="item:${itemList}" class="col-sm-2 my-2 d-flex justify-content-center">
+      <div class="card" style="width:200px; height:530px">
+        <img class="card-img-top" th:src="${item.imageUrl}" alt="Card image">
+        <div class="card-body" style="height: 210px;">
+          <p class="card-text">
+            <span class="lead" th:text="${#numbers.formatInteger(item.price, 3,'COMMA')}"></span>
+            원
+          </p>
+          <p class="card-title h4" th:text="${item.name}"></p>
+          <div>
+
+            <a th:href="@{/item/detail/{id}(id=${item.id})}" class="btn btn-dark">상세 보기</a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</html>
